@@ -5,54 +5,10 @@
 #include <unordered_map>
 #include <vector>
 
+// clang-format off
 #include "../include/fmt/format.h"
-
-enum class TokenType {
-    // Single-character tokens.
-    LEFT_PAREN,
-    RIGHT_PAREN,
-    LEFT_BRACE,
-    RIGHT_BRACE,
-    COMMA,
-    DOT,
-    MINUS,
-    PLUS,
-    SEMICOLON,
-    SLASH,
-    STAR,
-
-    // One or two character tokens.
-    BANG,
-    BANG_EQUAL,
-    EQUAL,
-    EQUAL_EQUAL,
-    GREATER,
-    GREATER_EQUAL,
-    LESS,
-    LESS_EQUAL,
-
-    // Literals.
-    IDENTIFIER,
-    STRING,
-    NUMLIT,
-
-    // Keywords.
-    IF,
-    WHILE,
-    SET,
-    BEGIN,
-    CONS,
-    CAR,
-    CDR,
-    NUMBER,
-    SYSMBOL,
-    LIST,
-    NIL,
-    PRINT,
-    T,
-
-    END_OF_FILE
-};
+#include "../include/parser.h"
+// clang-format on
 
 std::string getType(TokenType tt) {
     switch (tt) {
@@ -130,167 +86,136 @@ std::string getType(TokenType tt) {
             return "END_OF_FILE";
 
         default:
-            return "SOMETHING";
+            return "UNKNOWN";
     }
 }
 
-union Object {
-    std::string s;
-    int num;
-};
+Token::Token(TokenType t, std::string l, int nl) {
+    type = t;
+    lexeme = l;
+    numlit = nl;
+    isNum = true;
+}
+Token::Token(TokenType t, std::string l, std::string sl) {
+    type = t;
+    lexeme = l;
+    stringlit = sl;
+    isNum = false;
+}
 
-class Token {
-   public:
-    TokenType type;
-    std::string lexeme;
-    int numlit;
-    std::string stringlit;
-    bool isNum;
-    // int line;
+void Token::print() {
+    if (isNum)
+        fmt::print("{} {} {}\n", getType(type), lexeme, numlit);
+    else
+        fmt::print("{} {} {}\n", getType(type), lexeme, stringlit);
+}
 
-    Token(TokenType t, std::string l, int nl) {
-        type = t;
-        lexeme = l;
-        numlit = nl;
-        isNum = true;
+bool Scanner::isAtEnd() { return current >= source.length(); }
+char Scanner::advance() { return source.at(current++); }
+void Scanner::scanToken() {
+    char c = advance();
+    switch (c) {
+        // case '(':
+        //   addToken(TokenType::LEFT_PAREN);
+        //   break;
+        // case ')':
+        //   addToken(TokenType::RIGHT_PAREN);
+        //   break;
+        // case '{':
+        //   addToken(TokenType::LEFT_BRACE);
+        //   break;
+        // case '}':
+        //   addToken(RIGHT_BRACE);
+        //   break;
+        // case ',':
+        //   addToken(COMMA);
+        //   break;
+        // case '.':
+        //   addToken(DOT);
+        //   break;
+        // case '-':
+        //   addToken(MINUS);
+        //   break;
+        // case '+':
+        //   addToken(PLUS);
+        //   break;
+        // case ';':
+        //   addToken(SEMICOLON);
+        //   break;
+        // case '*':
+        //   addToken(STAR);
+        //   break; // [slash]
+        //          //> two-char-tokens
+        // case '!':
+        //   addToken(match('=') ? BANG_EQUAL : BANG);
+        //   break;
+        // case '=':
+        //   addToken(match('=') ? EQUAL_EQUAL : EQUAL);
+        //   break;
+        // case '<':
+        //   addToken(match('=') ? LESS_EQUAL : LESS);
+        //   break;
+        // case '>':
+        //   addToken(match('=') ? GREATER_EQUAL : GREATER);
+        //   break;
+        //   //< two-char-tokens
+        //   //> slash
+        // case '/':
+        //   if (match('/')) {
+        //     // A comment goes until the end of the line.
+        //     while (peek() != '\n' && !isAtEnd())
+        //       advance();
+        //   } else {
+        //     addToken(SLASH);
+        //   }
+        //   break;
+        //   //< slash
+        //   //> whitespace
+
+        // case ' ':
+        // case '\r':
+        // case '\t':
+        //   // Ignore whitespace.
+        //   break;
+
+        // case '\n':
+        //   line++;
+        //   break;
+        //   //< whitespace
+        //   //> string-start
+
+        // case '"':
+        //   string();
+        //   break;
+        //   //< string-start
+        //   //> char-error
+
+        // default:
+        //   /* Scanning char-error < Scanning digit-start
+        //           Lox.error(line, "Unexpected character.");
+        //   */
+        //   //> digit-start
+        //   if (isDigit(c)) {
+        //     number();
+        //     //> identifier-start
+        //   } else if (isAlpha(c)) {
+        //     identifier();
+        //     //< identifier-start
+        //   } else {
+        //     Lox.error(line, "Unexpected character.");
+        //   }
+        //   //< digit-start
+        //   break;
+        //   //< char-error
     }
-    Token(TokenType t, std::string l, std::string sl) {
-        type = t;
-        lexeme = l;
-        stringlit = sl;
-        isNum = false;
+}
+
+Scanner::Scanner(std::string src) { source = src; }
+std::list<Token> Scanner::scanTokens() {
+    while (!isAtEnd()) {
+        start = current;
+        // scanToken();
     }
-
-    void print() {
-        if (isNum)
-            fmt::print("{} {} {}\n", getType(type), lexeme, numlit);
-        else
-            fmt::print("{} {} {}\n", getType(type), lexeme, stringlit);
-    }
-};
-
-class Scanner {
-    std::string source;
-    std::list<Token> tokens;
-    int start = 0;
-    int current = 0;
-    // int line = 1;
-    bool isAtEnd() { return current >= source.length(); }
-    char advance() { return source.at(current++); }
-    void scanToken() {
-        char c = advance();
-        switch (c) {
-            // case '(':
-            //   addToken(TokenType::LEFT_PAREN);
-            //   break;
-            // case ')':
-            //   addToken(TokenType::RIGHT_PAREN);
-            //   break;
-            // case '{':
-            //   addToken(TokenType::LEFT_BRACE);
-            //   break;
-            // case '}':
-            //   addToken(RIGHT_BRACE);
-            //   break;
-            // case ',':
-            //   addToken(COMMA);
-            //   break;
-            // case '.':
-            //   addToken(DOT);
-            //   break;
-            // case '-':
-            //   addToken(MINUS);
-            //   break;
-            // case '+':
-            //   addToken(PLUS);
-            //   break;
-            // case ';':
-            //   addToken(SEMICOLON);
-            //   break;
-            // case '*':
-            //   addToken(STAR);
-            //   break; // [slash]
-            //          //> two-char-tokens
-            // case '!':
-            //   addToken(match('=') ? BANG_EQUAL : BANG);
-            //   break;
-            // case '=':
-            //   addToken(match('=') ? EQUAL_EQUAL : EQUAL);
-            //   break;
-            // case '<':
-            //   addToken(match('=') ? LESS_EQUAL : LESS);
-            //   break;
-            // case '>':
-            //   addToken(match('=') ? GREATER_EQUAL : GREATER);
-            //   break;
-            //   //< two-char-tokens
-            //   //> slash
-            // case '/':
-            //   if (match('/')) {
-            //     // A comment goes until the end of the line.
-            //     while (peek() != '\n' && !isAtEnd())
-            //       advance();
-            //   } else {
-            //     addToken(SLASH);
-            //   }
-            //   break;
-            //   //< slash
-            //   //> whitespace
-
-            // case ' ':
-            // case '\r':
-            // case '\t':
-            //   // Ignore whitespace.
-            //   break;
-
-            // case '\n':
-            //   line++;
-            //   break;
-            //   //< whitespace
-            //   //> string-start
-
-            // case '"':
-            //   string();
-            //   break;
-            //   //< string-start
-            //   //> char-error
-
-            // default:
-            //   /* Scanning char-error < Scanning digit-start
-            //           Lox.error(line, "Unexpected character.");
-            //   */
-            //   //> digit-start
-            //   if (isDigit(c)) {
-            //     number();
-            //     //> identifier-start
-            //   } else if (isAlpha(c)) {
-            //     identifier();
-            //     //< identifier-start
-            //   } else {
-            //     Lox.error(line, "Unexpected character.");
-            //   }
-            //   //< digit-start
-            //   break;
-            //   //< char-error
-        }
-    }
-
-   public:
-    Scanner(std::string src) { source = src; }
-    std::list<Token> scanTokens() {
-        while (!isAtEnd()) {
-            start = current;
-            // scanToken();
-        }
-    }
-};
+}
 
 void run(std::string src) {}
-
-int main() {
-    using namespace std;
-    string line;
-    while (getline(cin, line)) {
-        fmt::print("input: {}\n", line);
-    }
-}
