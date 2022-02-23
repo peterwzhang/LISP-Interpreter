@@ -5,7 +5,7 @@
 #include "../include/parser.h"
 
 int main() {
-    fmt::print(">>>");
+    fmt::print(">>> ");
     std::string input;
     std::cin >> input;
     Scanner scanner(input);
