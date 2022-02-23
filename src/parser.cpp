@@ -1,8 +1,8 @@
 #include <iostream>
 #include <list>
+#include <map>
 #include <memory>
 #include <string>
-#include <map>
 #include <vector>
 
 // clang-format off
@@ -110,9 +110,7 @@ void Token::print() {
         fmt::print("{} {} {}\n", getType(type), lexeme, stringlit);
 }
 
-Scanner::Scanner(std::string src) { 
-    source = src;
-}
+Scanner::Scanner(std::string src) { source = src; }
 
 std::list<Token> Scanner::scanTokens() {
     while (!isAtEnd()) {
@@ -124,133 +122,135 @@ std::list<Token> Scanner::scanTokens() {
     return tokens;
 }
 
-void Scanner::scanToken(){
+void Scanner::scanToken() {
     char c = advance();
     switch (c) {
         case '(':
-          addToken(TokenType::LEFT_PAREN);
-          break;
+            addToken(TokenType::LEFT_PAREN);
+            break;
         case ')':
-          addToken(TokenType::RIGHT_PAREN);
-          break;
+            addToken(TokenType::RIGHT_PAREN);
+            break;
         case '{':
-          addToken(TokenType::LEFT_BRACE);
-          break;
+            addToken(TokenType::LEFT_BRACE);
+            break;
         case '}':
-          addToken(TokenType::RIGHT_BRACE);
-          break;
+            addToken(TokenType::RIGHT_BRACE);
+            break;
         case ',':
-          addToken(TokenType::COMMA);
-          break;
+            addToken(TokenType::COMMA);
+            break;
         case '.':
-          addToken(TokenType::DOT);
-          break;
+            addToken(TokenType::DOT);
+            break;
         case '-':
-          addToken(TokenType::MINUS);
-          break;
+            addToken(TokenType::MINUS);
+            break;
         case '+':
-          addToken(TokenType::PLUS);
-          break;
+            addToken(TokenType::PLUS);
+            break;
         case ';':
-          addToken(TokenType::SEMICOLON);
-          break;
+            addToken(TokenType::SEMICOLON);
+            break;
         case '*':
-          addToken(TokenType::STAR);
-          break; // [slash]
-                 //> two-char-tokens
+            addToken(TokenType::STAR);
+            break;  // [slash]
+                    //> two-char-tokens
         case '!':
-          addToken(match('=') ? TokenType::BANG_EQUAL : TokenType::BANG);
-          break;
+            addToken(match('=') ? TokenType::BANG_EQUAL : TokenType::BANG);
+            break;
         case '=':
-          addToken(match('=') ? TokenType::EQUAL_EQUAL : TokenType::EQUAL);
-          break;
+            addToken(match('=') ? TokenType::EQUAL_EQUAL : TokenType::EQUAL);
+            break;
         case '<':
-          addToken(match('=') ? TokenType::LESS_EQUAL : TokenType::LESS);
-          break;
+            addToken(match('=') ? TokenType::LESS_EQUAL : TokenType::LESS);
+            break;
         case '>':
-          addToken(match('=') ? TokenType::GREATER_EQUAL : TokenType::GREATER);
-          break;
-          //< two-char-tokens
-          //> slash
+            addToken(match('=') ? TokenType::GREATER_EQUAL
+                                : TokenType::GREATER);
+            break;
+            //< two-char-tokens
+            //> slash
         case '/':
-          if (match('/')) {
-            // A comment goes until the end of the line.
-            while (peek() != '\n' && !isAtEnd())
-              advance();
-          } else {
-            addToken(TokenType::SLASH);
-          }
-          break;
-          //< slash
-          //> whitespace
+            if (match('/')) {
+                // A comment goes until the end of the line.
+                while (peek() != '\n' && !isAtEnd()) advance();
+            } else {
+                addToken(TokenType::SLASH);
+            }
+            break;
+            //< slash
+            //> whitespace
 
         case ' ':
         case '\r':
         case '\t':
-          // Ignore whitespace.
-          break;
+            // Ignore whitespace.
+            break;
 
         case '\n':
-          //line++;
-          break;
-          //< whitespace
-          //> string-start
+            // line++;
+            break;
+            //< whitespace
+            //> string-start
 
         case '"':
-          string();
-          break;
-          //< string-start
-          //> char-error
+            string();
+            break;
+            //< string-start
+            //> char-error
 
         default:
-          /* Scanning char-error < Scanning digit-start
-                  Lox.error(line, "Unexpected character.");
-          */
-          //> digit-start
-          if (isDigit(c)) {
-            number();
-            //> identifier-start
-          } else if (isAlpha(c)) {
-            identifier();
-            //< identifier-start
-          } else {
-            //Lox.error(line, "Unexpected character.");
-          }
-          //< digit-start
-          break;
-          //< char-error
+            /* Scanning char-error < Scanning digit-start
+                    Lox.error(line, "Unexpected character.");
+            */
+            //> digit-start
+            if (isDigit(c)) {
+                number();
+                //> identifier-start
+            } else if (isAlpha(c)) {
+                identifier();
+                //< identifier-start
+            } else {
+                // Lox.error(line, "Unexpected character.");
+            }
+            //< digit-start
+            break;
+            //< char-error
     }
 }
 
-void Scanner::identifier(){
-    while(isAlphaNumeric(peek())) advance();
+void Scanner::identifier() {
+    while (isAlphaNumeric(peek())) advance();
     std::string text = source.substr(start, current);
     TokenType type = keywords[text];
-    if(type == TokenType::DNE) type = TokenType::IDENTIFIER; //!come back later! maybe? add dne to map
+    if (type == TokenType::DNE)
+        type = TokenType::IDENTIFIER;  //! come back later! maybe? add dne to
+                                       //! map
     addToken(type);
 }
 
-void Scanner::number(){
-    while(isDigit(peek())) advance();
+void Scanner::number() {
+    while (isDigit(peek())) advance();
 
-    if( peek() == '.' && isDigit(peekNext())){
-        //Consume the '.'
+    if (peek() == '.' && isDigit(peekNext())) {
+        // Consume the '.'
         advance();
 
-        while(isDigit(peek())) advance();
+        while (isDigit(peek())) advance();
     }
 
     addToken(TokenType::NUMBER, std::stod(source.substr(start, current)));
 }
-void Scanner::string(){
+void Scanner::string() {
     while (peek() != '"' && !isAtEnd()) {
-      //if (peek() == '\n') line++;
-      advance();
+        // if (peek() == '\n') line++;
+        advance();
     }
 
     if (isAtEnd()) {
-      //Lox.error(line, "Unterminated string.");
-      return;
+        // Lox.error(line, "Unterminated string.");
+        return;
     }
 
     // The closing ".
@@ -260,51 +260,38 @@ void Scanner::string(){
     std::string value = source.substr(start + 1, current - 1);
     addToken(TokenType::STRING, value);
 }
-bool Scanner::match(char exp){
+bool Scanner::match(char exp) {
     if (isAtEnd()) return false;
     if (source[current] != exp) return false;
 
     current++;
     return true;
 }
-char Scanner::peek(){
+char Scanner::peek() {
     if (isAtEnd()) return '\0';
     return source[current];
 }
-char Scanner::peekNext(){
+char Scanner::peekNext() {
     if (current + 1 >= source.length()) return '\0';
     return source[current + 1];
 }
-bool Scanner::isAlpha(char c){
-    return (c >= 'a' && c <= 'z') ||
-           (c >= 'A' && c <= 'Z') ||
-            c == '_';
+bool Scanner::isAlpha(char c) {
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
 }
-bool Scanner::isAlphaNumeric(char c){
-    return isAlpha(c) || isDigit(c);
-}
-bool Scanner::isDigit(char c){
-    return c >= '0' && c <= '9';
-}
-bool Scanner::isAtEnd(){
-    return current >= source.length();
-}
-char Scanner::advance(){
-    return source[current++];
-}
-void Scanner::addToken(TokenType t){
-    addToken(t, NULL);
-}
-void Scanner::addToken(TokenType t, std::string sl){
+bool Scanner::isAlphaNumeric(char c) { return isAlpha(c) || isDigit(c); }
+bool Scanner::isDigit(char c) { return c >= '0' && c <= '9'; }
+bool Scanner::isAtEnd() { return current >= source.length(); }
+char Scanner::advance() { return source[current++]; }
+void Scanner::addToken(TokenType t) { addToken(t, NULL); }
+void Scanner::addToken(TokenType t, std::string sl) {
     std::string text = source.substr(start, current);
     Token tok(t, text, sl);
     tokens.push_back(tok);
 }
-void Scanner::addToken(TokenType t, int nl){
+void Scanner::addToken(TokenType t, int nl) {
     std::string text = source.substr(start, current);
     Token tok(t, text, nl);
     tokens.push_back(tok);
 }
 
-
-//void run(std::string src) {}
+// void run(std::string src) {}
