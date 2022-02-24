@@ -2,7 +2,7 @@ from eval import *
 
 _quote = Sym('quote')
 _if = Sym('if')
-_set = Sym('set!')
+_set = Sym('set')
 _define = Sym('define')
 _lambda = Sym('lambda')
 _begin = Sym('begin')
@@ -23,15 +23,15 @@ def repl(prompt='Code: '):
         try:
             if inpt == "quit": break
             val = eval(parse(inpt))
-            if val is not None: 
-                print((schemestr(val)))
+            if val is not None:
+                print((schemestr(val))) # this prints the output of the expression
         except Exception as e:
                 print('%s: %s' % (type(e).__name__, e))
 
 # Convert a Python object back into a Scheme-readable string.
 def schemestr(exp):
     if isinstance(exp, list):
-        return '(' + ' '.join(map(schemestr, exp)) + ')' 
+        return '(' + ' '.join(map(schemestr, exp)) + ')'
     else:
         return str(exp)
 

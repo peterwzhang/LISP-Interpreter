@@ -3,9 +3,9 @@
 from parse import *
 import math
 import operator as op
-    
+
 def div(a, b):
-    if isinstance(a, int):
+    if isinstance(a, int) and isinstance(b, int):
         return a // b
     else:
         return a / b
@@ -14,8 +14,8 @@ def div(a, b):
 class Procedure(object):
     def __init__(self, parms, body, env):
         self.parms, self.body, self.env = parms, body, env
-                            
-    def __call__(self, *args): 
+
+    def __call__(self, *args):
         return eval(self.body, Env(self.parms, args, self.env))
 
 
@@ -24,7 +24,7 @@ class Env(dict):
     def __init__(self, parms=(), args=(), outer=None):
         self.update(list(zip(parms, args)))
         self.outer = outer
-        
+
     # Find the innermost Env where var appears.
     def find(self, var):
         return self if (var in self) else self.outer.find(var)
@@ -53,10 +53,10 @@ def standard_env():
     env = Env()
     env.update(vars(math))
     env.update({
-        '+':op.add, 
-        '-':op.sub, 
-        '*':op.mul, 
-        '/':div, 
+        '+':op.add,
+        '-':op.sub,
+        '*':op.mul,
+        '/':div,
         '>':op.gt,
         '<':op.lt,
         '>=':op.ge,
@@ -68,12 +68,12 @@ def standard_env():
         'begin': lambda *x: x[-1],
         'car': lambda x: x[0],
         'cdr': lambda x: x[1:],
-        'cons': lambda x,y: [x] + y,
-        'eq?':     op.is_, 
-        'equal?':  op.eq, 
-        'length':  len, 
+        'cons': lambda x,y: [x] + [y],
+        'eq?':     op.is_,
+        'equal?':  op.eq,
+        'length':  len,
         'list':    lambda *x: list(x),
-        'list?':   lambda x: isinstance(x,list), 
+        'list?':   lambda x: isinstance(x,list),
         'map':     map,
         'max':     max,
         'filter':   filter,
@@ -81,8 +81,8 @@ def standard_env():
         'foldl':    foldl,
         'min':     min,
         'not':     op.not_,
-        'null?':   lambda x: x == [], 
-        'number?': lambda x: isinstance(x, Number),   
+        'null?':   lambda x: x == [],
+        'number?': lambda x: isinstance(x, Number),
         'procedure?': callable,
         'round':   round,
         'symbol?': lambda x: isinstance(x, Symbol),
@@ -93,7 +93,7 @@ global_env = standard_env()
 
 _quote = Sym('quote')
 _if = Sym('if')
-_set = Sym('set!')
+_set = Sym('set')
 _define = Sym('define')
 _lambda = Sym('lambda')
 _begin = Sym('begin')
@@ -105,6 +105,7 @@ _checkexpect = Sym('check-expect')
 _checkwithin = Sym('check-within')
 _member = Sym('member?')
 _struct = Sym('struct')
+_print = Sym('print')
 
 # Make predicates and field functions of a user defined struct
 def make_functions(name, param, env=global_env):
@@ -116,23 +117,23 @@ def make_functions(name, param, env=global_env):
     for par in param:
         index_array.append(i)
         i += 1
-        
+
     for par in param:
         key_array.append(name + '-' + par + '-pos')
 
     env.update(list(zip(key_array, index_array)))
-    
+
     env[name + '-pos'] = lambda arr, index: arr[index]
 
     env[check] = lambda arr: len(arr) == eval(create)
     env[create] = len(param)
-    
+
 # Evaluate an expression in an environment.
 def eval(x, env=global_env):
     if isinstance(x, Symbol): # variable reference
         return env.find(x)[x]
     elif not isinstance(x, list): # constant literal
-        return x                
+        return x
     elif x[0] == _quote: # quotation
         (_, exp) = x
         return exp
@@ -159,20 +160,23 @@ def eval(x, env=global_env):
     elif x[0] == _member: # member?
         (_, var, lst) = x
         return (eval(var, env) in eval(lst, env))
+    elif x[0] == _print: # print
+        (_, lst) = x
+        return print(eval(lst, env))
     elif x[0] == _struct: # struct definition
         (_, name, params) = x
         make_functions(name, params, env)
     else: # procedure call
         proc = eval(x[0], env)
-        if ( isinstance(x[0], str) and 
+        if ( isinstance(x[0], str) and
              x[0].startswith('make-')):
             args = [eval(arg, env) for arg in x[2:]]
-            if len(args) != proc: 
+            if len(args) != proc:
                 print(('TypeError: ' + x[0] + ' requires %d values, given %d' % (proc,  len(args))))
             else:
                 env[x[1]] = args
             return
-        else: 
+        else:
             args = [eval(arg, env) for arg in x[1:]]
         return proc(*args)
 
