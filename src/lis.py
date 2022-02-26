@@ -16,8 +16,7 @@ _member = Sym('member?')
 _struct = Sym('struct')
 
 # A prompt-read-eval-print loop.
-def repl(prompt='Code: '):
-    print("Lispy Version 3.0\n Get Coding!\n")
+def repl(prompt='\n-> '):
     while True:
         inpt = input(prompt)
         try:
