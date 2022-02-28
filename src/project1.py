@@ -40,7 +40,14 @@ def read_from_tokens(tokens):
         else:
             return '()'
     elif '\'' == token:
-        return ['string', tokens.pop(0)]
+        token = tokens.pop(0)
+        if token == '(':
+            token_list = []
+            while tokens[0] != ')':
+                token_list.append(tokens.pop(0))
+            tokens.pop(0)
+            return ['string', token_list]
+        return ['string', token]
     else:
         return atom(token)
 

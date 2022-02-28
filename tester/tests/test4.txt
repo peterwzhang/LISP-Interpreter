@@ -1,3 +1,5 @@
-(null? ())
-(car '(2 4 8))
+'A
+'apple2
+'()
+'(how are you today?) 
 quit

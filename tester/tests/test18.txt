@@ -1,0 +1,23 @@
+(+ 1 1)
+(- 1 1)
+(* 1 1)
+(/ 1 1)
+(> 1 1)
+(< 1 1)
+(= 1 1)
+(car (cons 'a 'b))
+(list? (cons 1 2))
+(list? T)
+(null? T)
+(null? ())
+(null? 1)
+(number? 1)
+(number? 'a)
+(symbol? 'a)
+(symbol? 1)
+T
+()
+quit
+
+
+(cdr (cons 'a 'b))

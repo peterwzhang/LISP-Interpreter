@@ -1,6 +1,6 @@
 #! /bin/sh
 
-numTests=3 # UPDATE THIS TO THE NUMBER OF TESTS
+numTests=18 # UPDATE THIS TO THE NUMBER OF TESTS
 sucesses=0
 
 getInput() {
