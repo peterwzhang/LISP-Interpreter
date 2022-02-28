@@ -70,52 +70,50 @@ def div(a, b):
     else:
         return a / b
 
+def begin(*x):
+    return x[-1]
 
-# A user-defined Lisp procedure.
-class Procedure(object):
-    def __init__(self, parms, body, env):
-        self.parms, self.body, self.env = parms, body, env
+def car(x):
+    return x[0]
 
-    def __call__(self, *args):
-        return eval(self.body, Env(self.parms, args, self.env))
+def cdr(x):
+    return x[1:]
 
+def cons(x, y):
+    return [x] + [y]
 
-# An environment: a dict with an outer Env.
-class Env(dict):
-    def __init__(self, parms=(), args=(), outer=None):
-        self.update(list(zip(parms, args)))
-        self.outer = outer
+def isList(x):
+    return isinstance(x,list)
 
-    # Find the innermost Env where var appears.
-    def find(self, var):
-        return self if (var in self) else self.outer.find(var)
+def isNull(x):
+    return x == []
 
-# An environment with some Lisp standard procedures."
-def standard_env():
-    env = Env()
-    env.update(vars(math))
-    env.update({
-        '+':op.add,
-        '-':op.sub,
-        '*':op.mul,
-        '/':div,
-        '>':op.gt,
-        '<':op.lt,
-        '=':op.eq,
-        'begin': lambda *x: x[-1],
-        'car': lambda x: x[0],
-        'cdr': lambda x: x[1:],
-        'cons': lambda x,y: [x] + [y],
-        'list?':   lambda x: (isinstance(x,list)),
-        'null?':   lambda x: x == [],
-        'number?': lambda x: isinstance(x, Number),
-        'symbol?': lambda x: isinstance(x, Symbol),
-        'T': 'T',
-        '()': False
-        })
-    return env
+def isNum(x):
+    return isinstance(x, Number)
 
-global_env = standard_env()
+def isSymbol(x):
+    return isinstance(x, Symbol)
+
+env = {
+    '+':op.add,
+    '-':op.sub,
+    '*':op.mul,
+    '/':div,
+    '>':op.gt,
+    '<':op.lt,
+    '=':op.eq,
+    'begin': begin,
+    'car': car,
+    'cdr': cdr,
+    'cons': cons,
+    'list?':   isList,
+    'null?':   isNull,
+    'number?': isNum,
+    'symbol?': isSymbol,
+    'T': 'T',
+    '()': False
+}
+
 
 _string = Sym('string')
 _if = Sym('if')
@@ -125,39 +123,35 @@ _print = Sym('print')
 _while = Sym('while')
 
 # Evaluate an expression in an environment.
-def eval(x, env=global_env):
+def eval(x):
     if isinstance(x, Symbol): # variable reference
-        return env.find(x)[x]
+        return env[x]
     elif not isinstance(x, list): # constant literal
         return x
     elif x[0] == _string: # quotation
         (_, exp) = x
         return exp
-    elif x[0] == _if: # conditional
+    elif x[0] == _if: # conditional 
         (_, test, conseq, alt) = x
-        exp = (conseq if eval(test, env) else alt)
-        return eval(exp, env)
-    elif x[0] == _define: # definition
-        (_, name, parms, body) = x
-        env[name] = Procedure(parms, body, env)
-        return name
+        exp = (conseq if eval(test) else alt)
+        return eval(exp)
     elif x[0] == _set: # assignment
         (_, var, exp) = x
         env[var] = eval(exp)
         return env[var]
     elif x[0] == _print: # print
         (_, lst) = x
-        print(eval(lst, env))
-        return print(eval(lst, env))
+        print(eval(lst))
+        return print(eval(lst))
     elif x[0] == _while: #while loop
         (_, test, conseq) = x
-        while (eval(test, env)):
+        while (eval(test)):
             exp = conseq
-            eval(exp, env)
-        return () #*dog ear*
+            eval(exp)
+        return ()
     else: # 
-        proc = eval(x[0], env)
-        args = [eval(arg, env) for arg in x[1:]]
+        proc = eval(x[0])
+        args = [eval(arg) for arg in x[1:]]
         return proc(*args)
 
 
@@ -166,12 +160,12 @@ def eval(x, env=global_env):
 def evaluate_command(inpt):
     val = eval(parse(inpt))
     if val is not None:
-        if (lispstr(val) == "True"):
+        if (to_str(val) == "True"):
             print("T")
-        elif (lispstr(val) == "False"):
+        elif (to_str(val) == "False"):
             print("()")
         else:
-            print((lispstr(val))) # this prints the output of the expression
+            print((to_str(val))) # this prints the output of the expression
 
 # A prompt-read-eval-print loop.
 def repl(prompt='-> '):
@@ -190,9 +184,9 @@ def repl(prompt='-> '):
             evaluate_command(inpt)
 
 # Convert a Python object back into a Lisp-readable string.
-def lispstr(exp):
+def to_str(exp):
     if isinstance(exp, list):
-        return '(' + ' '.join(map(lispstr, exp)) + ')'
+        return '(' + ' '.join(map(to_str, exp)) + ')'
     else:
         return str(exp)
 
