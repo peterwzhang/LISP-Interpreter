@@ -48,7 +48,7 @@ def foldl(combine, acc, lst):
                 lst[1:]
                 )
 
-# An environment with some Scheme standard procedures."
+# An environment with some LISP standard procedures."
 def standard_env():
     env = Env()
     env.update(vars(math))
@@ -73,7 +73,7 @@ def standard_env():
         'equal?':  op.eq,
         'length':  len,
         'list':    lambda *x: list(x),
-        'list?':   lambda x: isinstance(x,list),
+        'list?':   lambda x: (isinstance(x,list)),
         'map':     map,
         'max':     max,
         'filter':   filter,
@@ -86,6 +86,8 @@ def standard_env():
         'procedure?': callable,
         'round':   round,
         'symbol?': lambda x: isinstance(x, Symbol),
+        'T': 'T',
+        '()': False
         })
     return env
 
@@ -106,6 +108,9 @@ _checkwithin = Sym('check-within')
 _member = Sym('member?')
 _struct = Sym('struct')
 _print = Sym('print')
+_tru = Sym('T')
+_nil = Sym('()')
+_while = Sym('while')
 
 # Make predicates and field functions of a user defined struct
 def make_functions(name, param, env=global_env):
@@ -132,6 +137,14 @@ def make_functions(name, param, env=global_env):
 def eval(x, env=global_env):
     if isinstance(x, Symbol): # variable reference
         return env.find(x)[x]
+        exp = env.find(x)[x]
+        #print(exp)
+        if (exp == True):
+            return(print("T"))
+        elif (exp == False):
+            return(print("()"))
+        else:
+            return exp
     elif not isinstance(x, list): # constant literal
         return x
     elif x[0] == _quote: # quotation
@@ -142,11 +155,13 @@ def eval(x, env=global_env):
         exp = (conseq if eval(test, env) else alt)
         return eval(exp, env)
     elif x[0] == _define: # definition
-        (_, var, exp) = x
-        env[var] = eval(exp, env)
+        (_, name, parms, body) = x
+        env[name] = Procedure(parms, body, env)
+        return name
     elif x[0] == _set: # assignment
         (_, var, exp) = x
-        env.find(var)[var] = eval(exp, env)
+        env[var] = eval(exp)
+        return env[var]
     elif x[0] == _lambda: # procedure
         (_, parms, body) = x
         return Procedure(parms, body, env)
@@ -162,10 +177,17 @@ def eval(x, env=global_env):
         return (eval(var, env) in eval(lst, env))
     elif x[0] == _print: # print
         (_, lst) = x
+        print(eval(lst, env))
         return print(eval(lst, env))
     elif x[0] == _struct: # struct definition
         (_, name, params) = x
         make_functions(name, params, env)
+    elif x[0] == _while: #while loop
+        (_, test, conseq) = x
+        while (eval(test, env)):
+            exp = conseq
+            eval(exp, env)
+        return () #*dog ear*
     else: # procedure call
         proc = eval(x[0], env)
         if ( isinstance(x[0], str) and

@@ -26,27 +26,27 @@ def Sym(s):
         symbol_table[s] = Symbol(s)
     return symbol_table[s]
 
-_quote = Sym('quote')
-_if = Sym('if')
-_set = Sym('set!')
-_define = Sym('define')
-_lambda = Sym('lambda')
-_begin = Sym('begin')
-_definemacro = Sym('define-macro')
-_quasiquote = Sym('quasiquote')
-_unquoto = Sym('unquote')
-_unquotesplicing = Sym('unquote-splicing')
-_checkexpect = Sym('check-expect')
-_checkwithin = Sym('check-within')
-_member = Sym('member?')
-_struct = Sym('struct')
+# _quote = Sym('quote')
+# _if = Sym('if')
+# _set = Sym('set!')
+# _define = Sym('define')
+# _lambda = Sym('lambda')
+# _begin = Sym('begin')
+# _definemacro = Sym('define-macro')
+# _quasiquote = Sym('quasiquote')
+# _unquoto = Sym('unquote')
+# _unquotesplicing = Sym('unquote-splicing')
+# _checkexpect = Sym('check-expect')
+# _checkwithin = Sym('check-within')
+# _member = Sym('member?')
+# _struct = Sym('struct')
 
 # Tokenize input string
 # Seperate special characters [" ( ) ;) from expression
 # Tokens split by spaces
 def tokenize(code):
     code = code.replace('(', ' ( ').replace(')', ' ) ')
-    code = code.replace('\"', ' \" ').replace(';', ' ;').split()
+    code = code.replace('\'', ' \' ').replace('\"', ' \" ').replace(';', ' ;').split()
     return code
 
 # Read an expression from a sequence of tokens
@@ -57,10 +57,15 @@ def read_from_tokens(tokens):
     token = tokens.pop(0)
     if '(' == token:
         L = []
+        i = 0
         while tokens[0] != ')':
             L.append(read_from_tokens(tokens))
+            i+=1
         tokens.pop(0)
-        return L
+        if i:
+            return L
+        else:
+            return '()'
 
     elif '"' == token:
         L = []
@@ -71,6 +76,9 @@ def read_from_tokens(tokens):
         string += " ".join(L)
         string += end_quote
         return ['quote',  string]
+
+    elif '\'' == token:
+        return ['quote', tokens.pop(0)]
 
     elif ';' == token:
         L = []
@@ -89,9 +97,13 @@ def read_from_tokens(tokens):
 
 # Numbers become numbers; every other token is a symbol.
 def atom(token):
-    try: return int(token)
+    try: 
+        #print("Hey5")
+        return int(token)
     except ValueError:
-        try: return float(token)
+        try: 
+            #print("Hey6")
+            return float(token)
         except ValueError:
             return Symbol(token)
 
