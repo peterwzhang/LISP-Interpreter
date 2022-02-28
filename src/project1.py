@@ -6,7 +6,6 @@ import operator as op
 class Symbol(str): pass
 Symbol = str
 List   = list
-Number = (int, float)
 
 symbol_table = {}
 
@@ -86,10 +85,13 @@ def isList(x):
     return isinstance(x,list)
 
 def isNull(x):
-    return x == []
+    if x:
+        return False
+    else:
+        return True
 
 def isNum(x):
-    return isinstance(x, Number)
+    return isinstance(x,int) or isinstance(x, float)
 
 def isSymbol(x):
     return isinstance(x, Symbol)
@@ -114,11 +116,9 @@ env = {
     '()': False
 }
 
-
 _string = Sym('string')
 _if = Sym('if')
 _set = Sym('set')
-_define = Sym('define')
 _print = Sym('print')
 _while = Sym('while')
 
