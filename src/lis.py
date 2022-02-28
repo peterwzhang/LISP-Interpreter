@@ -29,7 +29,7 @@ def evaluate_command(inpt):
             print('%s: %s' % (type(e).__name__, e))
 
 # A prompt-read-eval-print loop.
-def repl(prompt='\n-> '):
+def repl(prompt='-> '):
     if len(sys.argv) > 1:
         file_name = sys.argv[1]
         open_file = open(file_name, 'r')

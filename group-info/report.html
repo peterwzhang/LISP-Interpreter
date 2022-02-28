@@ -16,18 +16,18 @@
         <p class="no-top-margin">Language used: Python</p>
       </div>
       <div class="tabs row">
-        <div class="col s12 m4 tab active" data-tab="part3">
-          <a href='javascript:tabSelect("part3")'> Part 3<br />Testing </a>
+        <div class="col s12 m4 tab active" data-tab="part1">
+          <a href='javascript:tabSelect("part1")'> Part 1<br />Implementation </a>
         </div>
         <div class="col s12 m4 tab" data-tab="part2">
           <a href='javascript:tabSelect("part2")'> Part 2<br />Compilation </a>
         </div>
-        <div class="col s12 m4 tab" data-tab="part1">
-          <a href='javascript:tabSelect("part1")'> Part 1<br />Implementation </a>
+        <div class="col s12 m4 tab" data-tab="part3">
+          <a href='javascript:tabSelect("part3")'> Part 3<br />Testing </a>
         </div>
       </div>
       <div class="tab-content-area">
-        <div id="part3">
+        <div id="part1">
           <div class="section">
             <h4>Members</h4>
 
@@ -252,7 +252,7 @@
 
           <p></p>
         </div>
-        <div id="part1" class="hide">
+        <div id="part3" class="hide">
           <div class="section">
             <h4>Members</h4>
 
@@ -422,9 +422,9 @@
     nextImage.classList.toggle("hide");
   }
 
-  const part3DiagramSrc = document.getElementById("part3-sequence-diagram-src");
+  const part1DiagramSrc = document.getElementById("part1-sequence-diagram-src");
 
-  function selectPart3SequenceDiagram(name) {
+  function selectpart1SequenceDiagram(name) {
     const newLi = document.querySelector(
       "[data-sequence-diagram=" + name + "]"
     );
@@ -432,15 +432,15 @@
     newLi.classList.toggle("underline");
     oldLi.classList.toggle("underline");
 
-    part3DiagramSrc.href =
+    part1DiagramSrc.href =
       "./03.design/sequence-diagrams/uxffiles/" + name + ".uxf";
 
     const previousImage = document.querySelector(
-      "#part3-sequence-diagram-img-container :not(.hide)"
+      "#part1-sequence-diagram-img-container :not(.hide)"
     );
     previousImage.classList.toggle("hide");
     const nextImage = document.querySelector(
-      "#part3-sequence-diagram-img-" + name
+      "#part1-sequence-diagram-img-" + name
     );
     nextImage.classList.toggle("hide");
   }
