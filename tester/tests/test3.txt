@@ -1,0 +1,11 @@
+(define factorial (x) (if (< x 2) 1 (* x (factorial (- x 1)))))
+(factorial 1)
+(factorial 5)
+(factorial 10)
+(print (factorial 5))
+(+ (factorial 5) (factorial 5))
+(print (* (factorial 5) (factorial 4)))
+(* (+ (factorial 5) (factorial 6)) (- (factorial 7) (factorial 4)))
+(factorial (+ 3 5))
+(factorial (* (+ 3 2) (- 9 7)))
+quit

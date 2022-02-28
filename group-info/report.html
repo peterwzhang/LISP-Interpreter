@@ -17,7 +17,9 @@
       </div>
       <div class="tabs row">
         <div class="col s12 m4 tab active" data-tab="part1">
-          <a href='javascript:tabSelect("part1")'> Part 1<br />Implementation </a>
+          <a href='javascript:tabSelect("part1")'>
+            Part 1<br />Implementation
+          </a>
         </div>
         <div class="col s12 m4 tab" data-tab="part2">
           <a href='javascript:tabSelect("part2")'> Part 2<br />Compilation </a>
@@ -96,7 +98,7 @@
               <tbody>
                 <tr>
                   <td>
-                    <strong>Task 1</strong>
+                    <strong>Research/Learning</strong>
                   </td>
 
                   <td>33.33%</td>
@@ -105,7 +107,7 @@
                 </tr>
                 <tr>
                   <td>
-                    <strong>Task 2</strong>
+                    <strong>Design</strong>
                   </td>
 
                   <td>33.33%</td>
@@ -136,7 +138,29 @@
           </div>
           <div class="divider"></div>
 
-          <div class="section"></div>
+          <div class="section">
+            <h4>Research/Learning</h4>
+            <p>
+              We took a group approach for the research required for this
+              project. This involved meeting up as a group every Tuesday and
+              Thursday from 12:30 p.m. CST to 6:30 p.m. CST. During these
+              meetings, we discussed the goals of the project, the language to
+              use, and how to impement each part of the interpreter (scanner,
+              parser, and the interpreter. We popcorn read the Crafting
+              Interpreters textbook in order to learn about the general grammar
+              of languages. This was a great opportunity to get to learn about
+              interpreter concepts together as a group and stay on the same
+              page. After we learned about the general grammer of languages. We
+              then learned about LISP, we played around with a Common Lisp by
+              using SBCL. This helped us understand some general Lisp concepts.
+              Then we read through Kamin's Pascal Lisp to see the flavour of
+              Lisp we will be implementing. After all of this was complete we
+              could then begin to work on our own implementation of the Kamin's
+              Lisp.
+            </p>
+            <h4>Design</h4>
+            <p></p>
+          </div>
           <p></p>
         </div>
         <div id="part2" class="hide">
@@ -321,17 +345,17 @@
               <tbody>
                 <tr>
                   <td>
-                    <strong>Task 1</strong>
+                    <strong>Testing Script</strong>
                   </td>
 
-                  <td>33.33%</td>
-                  <td>33.33%</td>
-                  <td>33.33%</td>
+                  <td>5.00%</td>
+                  <td>5.00%</td>
+                  <td>90.00%</td>
                 </tr>
 
                 <tr>
                   <td>
-                    <strong>Task 2</strong>
+                    <strong>Test Cases</strong>
                   </td>
 
                   <td>33.33%</td>
@@ -339,32 +363,20 @@
                   <td>33.33%</td>
                 </tr>
 
-                <tr>
-                  <td>
-                    <strong>Task 3</strong>
-                  </td>
-
-                  <td>33.33%</td>
-                  <td>33.33%</td>
-                  <td>33.33%</td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <strong>Task 4</strong>
-                  </td>
-
-                  <td>33.33%</td>
-                  <td>33.33%</td>
-                  <td>33.33%</td>
-                </tr>
               </tbody>
             </table>
             <p></p>
           </div>
 
           <div class="divider"></div>
-          <div class="section"></div>
+          <div class="section">
+            <h4>Testing Script</h4>
+            <p>We used a bash script to help automate our tests. The bash script is named "tester.sh" and is located in the main directory. It is hardcoded to specifically work with our project directory. We updated a 1994 C++ version of Kamin's Lisp Interpreter to work with a modern day C++ compiler. The testing script ask to run either a specified single test case or all of the test cases. The tester will then run the test case(s) on the C++ Kamin Interpreter and our own interpeter and compare the outputs. If they resulting outputs are the same then the test passes. </p>
+          </div>
+          <div class="section">
+            <h4>Test Cases</h4>
+            <p>This section holds all of our testcases and their outputs. Each test case is tested against a C++ implentation of Kamin's Lisp interpreter.</p>
+          </div>
 
           <p></p>
         </div>

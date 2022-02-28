@@ -1,6 +1,6 @@
 #! /bin/sh
 
-numTests=2 # UPDATE THIS TO THE NUMBER OF TESTS
+numTests=3 # UPDATE THIS TO THE NUMBER OF TESTS
 sucesses=0
 
 getInput() {
@@ -11,11 +11,9 @@ getInput() {
 runTest() {
     echo "Running test case $1"
     ./tester/kamincpp.out < tester/tests/test"$1".txt > tester/tests/test"$1".out
-    python3 src/lis.py < tester/tests/test"$1".txt > tester/tests/test"$1".ans
+    python3 src/project1.py < tester/tests/test"$1".txt > tester/tests/test"$1".ans
     matchedLines=$(diff -w -y --suppress-common-lines "tester/tests/test$1.ans" "tester/tests/test$1.out" | wc -l | tr -d '[:space:]')
-    echo "$matchedLines"
-    totalLines=$(wc -l < "tester/tests/test$1.ans" | tr -d '[:space:]')
-    if [ "$matchedLines" -eq "$totalLines" ]; then
+    if [ "$matchedLines" -eq "0" ]; then
         echo "Test case $1 passed"
         sucesses=$((sucesses+1))
     else
@@ -30,7 +28,9 @@ test() {
         done
     else
         runTest "$1"
+        numTests=1
     fi
+    echo "Number of tests passed: $sucesses/$numTests"
 }
 
 getInput

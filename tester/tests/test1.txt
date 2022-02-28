@@ -1,2 +1,2 @@
-(+ 1 2)
+(print 'Hello_World!)
 quit
