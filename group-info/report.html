@@ -135,25 +135,27 @@
             <h4>Research/Learning</h4>
             <p>
               We took a group approach for the research required for this
-              project. This involved meeting up as a group every Tuesday and
-              Thursday from 12:30 p.m. CST to 6:30 p.m. CST. During these
-              meetings, we discussed the goals of the project, the language to
-              use, and how to impement each part of the interpreter (scanner,
-              parser, and the interpreter. We popcorn read the Crafting
-              Interpreters textbook in order to learn about the general grammar
-              of languages (This is an agile teambuilding exercise). This was a
-              great opportunity to get to learn about interpreter concepts
-              together as a group and stay on the same page. After we learned
-              about the general grammer of languages. We then learned about
-              LISP, we played around with a Common Lisp by using Steel Bank
-              Common Lisp (SBCL). This helped us understand some general Lisp
-              concepts. Then we read through Kamin's Pascal Lisp to see the
-              flavour of Lisp we will be implementing. After all of this was
-              complete we could then begin to work on our own implementation of
-              the Kamin's Lisp.
+              project. This involved meeting up as a group every Tuesday at the
+              library. During these meetings, we discussed the goals of the
+              project, the language to use, and how to impement each part of the
+              interpreter (scanner, parser, and the interpreter. We popcorn read
+              the Crafting Interpreters textbook in order to learn about the
+              general grammar of languages (This is an agile teambuilding
+              exercise). This was a great opportunity to get to learn about
+              interpreter concepts together as a group and stay on the same
+              page. After we learned about the general grammer of languages. We
+              then learned about LISP, we played around with a Common Lisp by
+              using Steel Bank Common Lisp (SBCL). This helped us understand
+              some general Lisp concepts. Then we read through Kamin's Pascal
+              Lisp to see the flavour of Lisp we will be implementing. After all
+              of this was complete we could then begin to work on our own
+              implementation of the Kamin's Lisp.
             </p>
             <h4>Design</h4>
-            <p>Since this project has many parts that must work together. We had to make some selective design choices.</p>
+            <p>
+              Since this project has many parts that must work together. We had
+              to make some selective design choices.
+            </p>
             <h4>Implementation of Code</h4>
             <p></p>
           </div>
@@ -295,12 +297,168 @@
           </div>
 
           <div class="section">
+            <!-- !Update Script to work with test cases -->
             <h4>Test Cases</h4>
-            <p>
-              Below are all of our test cases.
-            </p>
+            <p style="margin-bottom: 0">Choose the test case to view:</p>
+            <ul style="margin-top: 0">
+              <li>
+                <a
+                  class="underline"
+                  href="javascript:setTestCase(1)"
+                  data-sequence-diagram="addMemberRecord"
+                >
+                  Test Case 1
+                </a>
+              </li>
+              <li>
+                <a
+                  href="javascript:setTestCase(2)"
+                  data-sequence-diagram="addProviderRecord"
+                >
+                  Test Case 2
+                </a>
+              </li>
+              <li>
+                <a
+                  href="javascript:setTestCase(3)"
+                  data-sequence-diagram="deleteMemberRecord"
+                >
+                  Test Case 3
+                </a>
+              </li>
+              <li>
+                <a
+                  href="javascript:setTestCase(4)"
+                  data-sequence-diagram="deleteProviderRecord"
+                >
+                  Test Case 4
+                </a>
+              </li>
+              <li>
+                <a
+                  href="javascript:setTestCase(5)"
+                  data-sequence-diagram="generateMemberReport"
+                >
+                  Test Case 5
+                </a>
+              </li>
+              <li>
+                <a
+                  href="javascript:setTestCase(6)"
+                  data-sequence-diagram="generateProviderReport"
+                >
+                  Test Case 6
+                </a>
+              </li>
+              <li>
+                <a
+                  href="javascript:setTestCase(7)"
+                  data-sequence-diagram="generateSummaryReport"
+                >
+                  Test Case 7
+                </a>
+              </li>
+              <li>
+                <a
+                  href="javascript:setTestCase(8)"
+                  data-sequence-diagram="lookUpServiceByServiceCode"
+                >
+                  Test Case 8
+                </a>
+              </li>
+              <li>
+                <a
+                  href="javascript:setTestCase(9)"
+                  data-sequence-diagram="manageMemberRecord"
+                >
+                  Test Case 9
+                </a>
+              </li>
+              <li>
+                <a
+                  href="javascript:setTestCase(10)"
+                  data-sequence-diagram="manageProviderRecord"
+                >
+                  Test Case 10
+                </a>
+              </li>
+              <li>
+                <a
+                  href="javascript:setTestCase(11)"
+                  data-sequence-diagram="manageReports"
+                >
+                  Test Case 11
+                </a>
+              </li>
+              <li>
+                <a
+                  href="javascript:setTestCase(12)"
+                  data-sequence-diagram="produceEFTData"
+                >
+                  Test Case 12
+                </a>
+              </li>
+              <li>
+                <a
+                  href="javascript:setTestCase(13)"
+                  data-sequence-diagram="recordServiceProvided"
+                >
+                  Test Case 13
+                </a>
+              </li>
+              <li>
+                <a
+                  href="javascript:setTestCase(14)"
+                  data-sequence-diagram="requestProviderDirectory"
+                >
+                  Test Case 14
+                </a>
+              </li>
+              <li>
+                <a
+                  href="javascript:setTestCase(15)"
+                  data-sequence-diagram="runAccountingProcedure"
+                >
+                  Test Case 15
+                </a>
+              </li>
+              <li>
+                <a
+                  href="javascript:setTestCase(16)"
+                  data-sequence-diagram="updateMemberRecord"
+                >
+                  Test Case 16
+                </a>
+              </li>
+              <li>
+                <a
+                  href="javascript:setTestCase(17)"
+                  data-sequence-diagram="updateProviderRecord"
+                >
+                  Test Case 17
+                </a>
+              </li>
+              <li>
+                <a
+                  href="javascript:setTestCase(18)"
+                  data-sequence-diagram="verifyMembership"
+                >
+                  Test Case 18
+                </a>
+              </li>
+            </ul>
+            <!-- !Replace pictures with test cases -->
+            <div class="center" id="part3-sequence-diagram-img-container">
+                <div class="side-by-side">
+                    <strong><p id="test-case-num">Test Case 1:</p></strong>
+                    <pre><code id="test-case-display"></code></pre>
+                </div>
+                <div class="side-by-side">
+                    <strong><p id="test-output-num">Test Case Output 1:</p></strong>
+                    <pre><code id="test-result-display"></code></pre>
+                </div>
+            </div>
           </div>
-
           <p></p>
         </div>
         <div id="part3" class="hide">
@@ -324,8 +482,8 @@
                 <ul>
                   <li>
                     Bash typically comes with Linux and MacOS. If you are
-                    Windows you can install Cywgin in order to run bash scripts. You
-                    can find the setup page
+                    Windows you can install Cywgin in order to run bash scripts.
+                    You can find the setup page
                     <a href="https://www.python.org/downloads/"> here</a>.
                   </li>
                 </ul>
@@ -403,6 +561,63 @@
     );
     currentTabContent.classList.toggle("hide");
     newTabContent.classList.toggle("hide");
+  }
+
+  function readTextFile(file) {
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function () {
+      if (rawFile.readyState === 4) {
+        if (rawFile.status === 200 || rawFile.status == 0) {
+          var allText = rawFile.responseText;
+          //alert(allText);
+          return allText;
+        }
+      }
+    };
+    rawFile.send(null);
+    return rawFile.responseText;
+  }
+
+  const testNumDisplay = document.getElementById("test-case-num");
+  const testOutputNumDisplay = document.getElementById("test-output-num");
+  const testDisplay = document.getElementById("test-case-display");
+  const testAnsDisplay = document.getElementById("test-result-display");
+  setTestCase(1);
+
+  function setTestCase(num) {
+    testNumDisplay.innerHTML = "Test Case " + num + ":";
+    testOutputNumDisplay.innerHTML = "Test Case Output " + num + ":";
+    testDisplay.innerHTML = readTextFile("../tester/tests/test" + num + ".txt");
+    testAnsDisplay.innerHTML = readTextFile(
+      "../tester/tests/test" + num + ".ans"
+    ).substring(1);
+    if (testAnsDisplay.innerHTML[0] === "\n") {
+      testAnsDisplay.innerHTML = testAnsDisplay.innerHTML.substring(1);
+    }
+  }
+
+  const part3DiagramSrc = document.getElementById("part3-sequence-diagram-src");
+
+  function selectPart3SequenceDiagram(name) {
+    const newLi = document.querySelector(
+      "[data-sequence-diagram=" + name + "]"
+    );
+    const oldLi = document.querySelector(".underline[data-sequence-diagram]");
+    newLi.classList.toggle("underline");
+    oldLi.classList.toggle("underline");
+
+    part3DiagramSrc.href =
+      "./03.design/sequence-diagrams/uxffiles/" + name + ".uxf";
+
+    const previousImage = document.querySelector(
+      "#part3-sequence-diagram-img-container :not(.hide)"
+    );
+    previousImage.classList.toggle("hide");
+    const nextImage = document.querySelector(
+      "#part3-sequence-diagram-img-" + name
+    );
+    nextImage.classList.toggle("hide");
   }
 
   const part2DiagramSrc = document.getElementById("part2-activity-diagram-src");
