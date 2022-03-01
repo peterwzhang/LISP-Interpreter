@@ -31,10 +31,10 @@
         </div>
       </div>
       <div class="tab-content-area">
+        <!-- Implementation -->
         <div id="part1">
           <div class="section">
             <h4>Members</h4>
-
             <table class="center">
               <thead>
                 <tr>
@@ -161,10 +161,10 @@
           </div>
           <p></p>
         </div>
+        <!-- Testing -->
         <div id="part2" class="hide">
           <div class="section">
             <h4>Members</h4>
-
             <table class="center">
               <thead>
                 <tr>
@@ -305,23 +305,20 @@
                 <a
                   class="underline"
                   href="javascript:setTestCase(1)"
-                  data-sequence-diagram="addMemberRecord"
+                  test-case="case-1"
                 >
                   Test Case 1
                 </a>
               </li>
               <li>
-                <a
-                  href="javascript:setTestCase(2)"
-                  data-sequence-diagram="addProviderRecord"
-                >
+                <a href="javascript:setTestCase(2)" test-case="case-2">
                   Test Case 2
                 </a>
               </li>
               <li>
                 <a
                   href="javascript:setTestCase(3)"
-                  data-sequence-diagram="deleteMemberRecord"
+                  test-case="case-3"
                 >
                   Test Case 3
                 </a>
@@ -329,7 +326,7 @@
               <li>
                 <a
                   href="javascript:setTestCase(4)"
-                  data-sequence-diagram="deleteProviderRecord"
+                  test-case="case-4"
                 >
                   Test Case 4
                 </a>
@@ -337,7 +334,7 @@
               <li>
                 <a
                   href="javascript:setTestCase(5)"
-                  data-sequence-diagram="generateMemberReport"
+                  test-case="case-5"
                 >
                   Test Case 5
                 </a>
@@ -345,7 +342,7 @@
               <li>
                 <a
                   href="javascript:setTestCase(6)"
-                  data-sequence-diagram="generateProviderReport"
+                  test-case="case-6"
                 >
                   Test Case 6
                 </a>
@@ -353,7 +350,7 @@
               <li>
                 <a
                   href="javascript:setTestCase(7)"
-                  data-sequence-diagram="generateSummaryReport"
+                  test-case="case-7"
                 >
                   Test Case 7
                 </a>
@@ -361,7 +358,7 @@
               <li>
                 <a
                   href="javascript:setTestCase(8)"
-                  data-sequence-diagram="lookUpServiceByServiceCode"
+                  test-case="case-8"
                 >
                   Test Case 8
                 </a>
@@ -369,7 +366,7 @@
               <li>
                 <a
                   href="javascript:setTestCase(9)"
-                  data-sequence-diagram="manageMemberRecord"
+                  test-case="case-9"
                 >
                   Test Case 9
                 </a>
@@ -377,31 +374,25 @@
               <li>
                 <a
                   href="javascript:setTestCase(10)"
-                  data-sequence-diagram="manageProviderRecord"
+                  test-case="case-10"
                 >
                   Test Case 10
                 </a>
               </li>
               <li>
-                <a
-                  href="javascript:setTestCase(11)"
-                  data-sequence-diagram="manageReports"
-                >
+                <a href="javascript:setTestCase(11)" test-case="case-11">
                   Test Case 11
                 </a>
               </li>
               <li>
-                <a
-                  href="javascript:setTestCase(12)"
-                  data-sequence-diagram="produceEFTData"
-                >
+                <a href="javascript:setTestCase(12)" test-case="case-12">
                   Test Case 12
                 </a>
               </li>
               <li>
                 <a
                   href="javascript:setTestCase(13)"
-                  data-sequence-diagram="recordServiceProvided"
+                  test-case="case-13"
                 >
                   Test Case 13
                 </a>
@@ -409,7 +400,7 @@
               <li>
                 <a
                   href="javascript:setTestCase(14)"
-                  data-sequence-diagram="requestProviderDirectory"
+                  test-case="case-14"
                 >
                   Test Case 14
                 </a>
@@ -417,7 +408,7 @@
               <li>
                 <a
                   href="javascript:setTestCase(15)"
-                  data-sequence-diagram="runAccountingProcedure"
+                  test-case="case-15"
                 >
                   Test Case 15
                 </a>
@@ -425,7 +416,7 @@
               <li>
                 <a
                   href="javascript:setTestCase(16)"
-                  data-sequence-diagram="updateMemberRecord"
+                  test-case="case-16"
                 >
                   Test Case 16
                 </a>
@@ -433,7 +424,7 @@
               <li>
                 <a
                   href="javascript:setTestCase(17)"
-                  data-sequence-diagram="updateProviderRecord"
+                  test-case="case-17"
                 >
                   Test Case 17
                 </a>
@@ -441,26 +432,26 @@
               <li>
                 <a
                   href="javascript:setTestCase(18)"
-                  data-sequence-diagram="verifyMembership"
+                  test-case="case-18"
                 >
                   Test Case 18
                 </a>
               </li>
             </ul>
-            <!-- !Replace pictures with test cases -->
             <div class="center" id="part3-sequence-diagram-img-container">
-                <div class="side-by-side">
-                    <strong><p id="test-case-num">Test Case 1:</p></strong>
-                    <pre><code id="test-case-display"></code></pre>
-                </div>
-                <div class="side-by-side">
-                    <strong><p id="test-output-num">Test Case Output 1:</p></strong>
-                    <pre><code id="test-result-display"></code></pre>
-                </div>
+              <div class="side-by-side">
+                <strong><p id="test-case-num">Test Case 1 Input:</p></strong>
+                <pre><code id="test-case-display"></code></pre>
+              </div>
+              <div class="side-by-side">
+                <strong><p id="test-output-num">Test Case Output 1:</p></strong>
+                <pre><code id="test-result-display"></code></pre>
+              </div>
             </div>
           </div>
           <p></p>
         </div>
+        <!-- Compilation + Testing -->
         <div id="part3" class="hide">
           <div class="section">
             <h4>Requirements</h4>
@@ -535,15 +526,6 @@
       </div>
     </div>
     <p></p>
-    <script type="text/javascript">
-      (function () {
-        window["__CF$cv$params"] = {
-          r: "6d7819119af1187b",
-          m: "FXfHMwy3NKsMmtb1l9O.NZGoq2xwUvCxNnLazP8Y.4w-1643853965-0-AUy0M3WcZXqIdYAEmYlJycZSmj4GqImAFGYGSj0QoSrgKDIdiJxi4LOwNAMXCTdXY3qkHL+kY4aMvzPNd8I07lhac0wczY0Vdll5doKGO0ihtMPzkjt4Eym1VJp5jrtOD+iUXtv3b/l+6B3kuxdYvwlzCQEeErqf0PMO3Jpc3raAnN5njMLtu/aJIOB7HJuSVA==",
-          s: [0xe6550f8e18, 0x5f429b0657],
-        };
-      })();
-    </script>
   </body>
 </html>
 <script type="text/javascript">
@@ -570,7 +552,6 @@
       if (rawFile.readyState === 4) {
         if (rawFile.status === 200 || rawFile.status == 0) {
           var allText = rawFile.responseText;
-          //alert(allText);
           return allText;
         }
       }
@@ -586,6 +567,12 @@
   setTestCase(1);
 
   function setTestCase(num) {
+    // handle list updating
+    const newLi = document.querySelector("[test-case=case-" + num + "]");
+    const oldLi = document.querySelector(".underline[test-case]");
+    newLi.classList.toggle("underline");
+    oldLi.classList.toggle("underline");
+    // handle test case updating
     testNumDisplay.innerHTML = "Test Case " + num + ":";
     testOutputNumDisplay.innerHTML = "Test Case Output " + num + ":";
     testDisplay.innerHTML = readTextFile("../tester/tests/test" + num + ".txt");
@@ -595,74 +582,5 @@
     if (testAnsDisplay.innerHTML[0] === "\n") {
       testAnsDisplay.innerHTML = testAnsDisplay.innerHTML.substring(1);
     }
-  }
-
-  const part3DiagramSrc = document.getElementById("part3-sequence-diagram-src");
-
-  function selectPart3SequenceDiagram(name) {
-    const newLi = document.querySelector(
-      "[data-sequence-diagram=" + name + "]"
-    );
-    const oldLi = document.querySelector(".underline[data-sequence-diagram]");
-    newLi.classList.toggle("underline");
-    oldLi.classList.toggle("underline");
-
-    part3DiagramSrc.href =
-      "./03.design/sequence-diagrams/uxffiles/" + name + ".uxf";
-
-    const previousImage = document.querySelector(
-      "#part3-sequence-diagram-img-container :not(.hide)"
-    );
-    previousImage.classList.toggle("hide");
-    const nextImage = document.querySelector(
-      "#part3-sequence-diagram-img-" + name
-    );
-    nextImage.classList.toggle("hide");
-  }
-
-  const part2DiagramSrc = document.getElementById("part2-activity-diagram-src");
-
-  function selectPart2ActivityDiagram(name) {
-    const newLi = document.querySelector(
-      "[data-sequence-diagram=" + name + "]"
-    );
-    const oldLi = document.querySelector(".underline[data-sequence-diagram]");
-    newLi.classList.toggle("underline");
-    oldLi.classList.toggle("underline");
-
-    part2DiagramSrc.href =
-      "./02.analysis/activitydiagrams/diagramfiles/" + name + ".uxf";
-
-    const previousImage = document.querySelector(
-      "#part2-activity-diagram-img-container :not(.hide)"
-    );
-    previousImage.classList.toggle("hide");
-    const nextImage = document.querySelector(
-      "#part2-activity-diagram-img-" + name
-    );
-    nextImage.classList.toggle("hide");
-  }
-
-  const part1DiagramSrc = document.getElementById("part1-sequence-diagram-src");
-
-  function selectpart1SequenceDiagram(name) {
-    const newLi = document.querySelector(
-      "[data-sequence-diagram=" + name + "]"
-    );
-    const oldLi = document.querySelector(".underline[data-sequence-diagram]");
-    newLi.classList.toggle("underline");
-    oldLi.classList.toggle("underline");
-
-    part1DiagramSrc.href =
-      "./03.design/sequence-diagrams/uxffiles/" + name + ".uxf";
-
-    const previousImage = document.querySelector(
-      "#part1-sequence-diagram-img-container :not(.hide)"
-    );
-    previousImage.classList.toggle("hide");
-    const nextImage = document.querySelector(
-      "#part1-sequence-diagram-img-" + name
-    );
-    nextImage.classList.toggle("hide");
   }
 </script>
