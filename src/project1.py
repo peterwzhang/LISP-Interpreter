@@ -2,65 +2,21 @@ import sys
 import operator as op
 
 # class containing symbols (all are python strings)
+# symbols are defined as non-numbers (not ints or floats)
 class Symbol(str): pass
 Symbol = str
 
-# turns input strings into tokens separated by spaces
-def tokenize(lisp_expression):
-    lisp_expression = lisp_expression.replace('(', ' ( ').replace(')', ' ) ')
-    lisp_expression = lisp_expression.replace('\'', ' \' ') 
-    lisp_expression = lisp_expression.split()
-    return lisp_expression
+#=============================================================================
+#
+# Function definitions of all built-in functionality for the interpreter that
+# are not built into python including begin, div (combination of truediv and
+# floordiv), cons, car, cdr, number?, symbol?, list?, null?
+#
+#=============================================================================
 
-# reads sequence of tokens and parses strings
-def read_from_tokens(tokens):
-    token = tokens.pop(0)
-    if '(' == token:
-        # the following will be either NULL or an expression
-        token_list = []
-        i = 0
-        # makes token_list from all tokens within parentheses
-        while tokens[0] != ')':
-            token_list.append(read_from_tokens(tokens))
-            i+=1
-        tokens.pop(0)
-        # if i is zero, it's NULL
-        if i:
-            return token_list
-        else:
-            return '()'
-    elif '\'' == token:
-        # the token is a "quoted string" and not evaluated
-        token = tokens.pop(0)
-        if token == '(':
-            token_list = []
-            while tokens[0] != ')':
-                token_list.append(tokens.pop(0))
-            tokens.pop(0)
-            return ['string', token_list]
-        return ['string', token]
-    else:
-        # the token is an atom (int, float, or symbol)
-        return atom(token)
-
-# returns what kind of atom the token is (int, float, or symbol)
-def atom(token):
-    if token.isnumeric():
-        # if the atom is an int, return int
-        return int(token)
-    elif '.' in token:
-        # if the atom is a float, return float
-        test = token.replace('.', '')
-        if test.isnumeric():
-            return float(token)
-    else:
-        # if the atom is not an int or float, return symbol
-        return Symbol(token)
-
-# parse Lisp expression from string
-def parse(lisp_expression):
-    # returns the tokenized Lisp command(s)
-    return read_from_tokens(tokenize(lisp_expression))
+# returns most recent of any number of args x
+def begin(*x):
+    return x[-1]
 
 # allow div to compute floordiv or truediv based on types of numbers
 def div(a, b):
@@ -71,9 +27,9 @@ def div(a, b):
         # if a and/or b are floats, return truediv
         return a / b
 
-# returns most recent of any number of args x
-def begin(*x):
-    return x[-1]
+# creates list from x and y
+def cons(x, y):
+    return [x] + [y]
 
 # return the first element of list x
 def car(x):
@@ -83,9 +39,13 @@ def car(x):
 def cdr(x):
     return x[1:]
 
-# creates list from x and y
-def cons(x, y):
-    return [x] + [y]
+# if x is an int or a float return T, otherwise return ()
+def isNum(x):
+    return isinstance(x,int) or isinstance(x, float)
+
+# if x is a symbol return T, otherwise return ()
+def isSymbol(x):
+    return isinstance(x, Symbol)
 
 # if x is a list return T, otherwise return ()
 def isList(x):
@@ -98,17 +58,14 @@ def isNull(x):
     else:
         return True
 
-# if x is an int or a float return T, otherwise return ()
-def isNum(x):
-    return isinstance(x,int) or isinstance(x, float)
-
-# if x is a symbol return T, otherwise return ()
-def isSymbol(x):
-    return isinstance(x, Symbol)
-
+#=============================================================================
+#
 # defines environment (dict) of operation definitions
 # the key is the operation as it appears in a Lisp command
 # the value is the operation as it is executed
+#
+#=============================================================================
+
 env = {
     # 'key': value,
     'begin': begin,
@@ -133,26 +90,43 @@ env = {
     'T': 'T',
     '()': False
 }
+        
+#=============================================================================
+#
+# Evaluation of Lisp commands by using the environment as defined above and/or
+# user defined functions appended to the environment list
+#
+#=============================================================================
 
+# list containing global environment (all required functionality as defined in project description)
+# user defined functions are appended to this list
 envList = [env]
 
-
-class Procedure(object):
-    def __init__(self, params, body, outerEnv):
-        self.params, self.body, self.outerEnv  = params, body, outerEnv
-
-    def __call__(self, *args):
-        envList.append(dict(zip(self.params, args))) 
-        self.index = len(envList) - 1
-        return eval(self.body[0], dict(zip(self.params, args)), self.index)
-        
+# returns the index of the user defined function (where it's found in the environment list)
 def getEnvInd(x):
     i = len(envList) - 1
+    # goes through every element in the environment list
     while x not in envList[i]:
+        # when the index matches the index of the function called by the user, returns that index
         if i == 0:
             break
         i -= 1
     return i
+
+# Procedure is called to define a function
+class Procedure(object):
+    def __init__(self, params, body, outerEnv):
+        # initializes the procedure with the provided parameters, function body, and outer environment
+        self.params, self.body, self.outerEnv  = params, body, outerEnv
+
+    def __call__(self, *args):
+        # when a predefined function is called:
+        # append the new parameters and arguments to the environment list
+        envList.append(dict(zip(self.params, args))) 
+        # set index where function definition can be found within environment list
+        self.index = len(envList) - 1
+        # evaluates the function with provided arguments
+        return eval(self.body[0], dict(zip(self.params, args)), self.index)
 
 # evaluates expression x within env as defined above
 def eval(x, env=envList[0], envI=0):
@@ -168,7 +142,9 @@ def eval(x, env=envList[0], envI=0):
         (_, quoted_str) = x
         return quoted_str
     elif x[0] == 'define':
+        # defines a function with params and function body as defined by user
         (params, *body) = x[2:]
+        # creates the procedure for the user defined function
         env[x[1]] = Procedure(params, body, env)
         return x[1]
     elif x[0] == 'if':
@@ -194,29 +170,119 @@ def eval(x, env=envList[0], envI=0):
             eval(exp, env, envI)
         return ()
     else:
-        # if x is not in the above defined functions (if, set, print, while)
-        # evaluate the expression, return solution 
+        # if x is not in the above defined finctions (if, set, print, while, define)
+        # evaluate the user defined function, return solution 
+        # calls user defined function
         func = eval(x[0], env, envI)
+        # sets arguments to values as defined in function call
         args = [eval(arg, env, getEnvInd(func)) for arg in x[1:]]
+        # returns evaluated function
         return func(*args)
 
-# evaluates the command provided either in a test file or in line-by-line input
-def evaluate_command(lisp_input):
+#=============================================================================
+#
+# Reads from tokenized (see below) strings, parses the tokens so they can be
+# interpreted by the program 
+#
+#=============================================================================
+
+# returns what kind of atom the token is (int, float, or symbol)
+def atomType(token):
+    if token.isnumeric():
+        # if the atom is an int, return int
+        return int(token)
+    elif '.' in token:
+        # if the atom is a float, return float
+        test = token.replace('.', '')
+        if test.isnumeric():
+            return float(token)
+    else:
+        # if the atom is not an int or float, return symbol
+        return Symbol(token)
+
+# reads sequence of tokens and parses strings
+def readTokens(tokens):
+    token = tokens.pop(0)
+    if '(' == token:
+        # the following will be either NULL or an expression
+        token_list = []
+        i = 0
+        # makes token_list from all tokens within parentheses
+        while tokens[0] != ')':
+            token_list.append(readTokens(tokens))
+            i+=1
+        tokens.pop(0)
+        # if i is zero, it's NULL
+        if i:
+            return token_list
+        else:
+            return '()'
+    elif '\'' == token:
+        # the token is a "quoted string" and not evaluated
+        token = tokens.pop(0)
+        if token == '(':
+            token_list = []
+            while tokens[0] != ')':
+                token_list.append(tokens.pop(0))
+            tokens.pop(0)
+            return ['string', token_list]
+        return ['string', token]
+    else:
+        # the token is an atom (int, float, or symbol)
+        return atomType(token)
+
+#=============================================================================
+#
+# Turns input into tokens, parses tokens as parts of Lisp expressions
+# Ensures output is in correct lisp formatting (toStr())
+#
+#=============================================================================
+
+# turns input strings into tokens separated by spaces
+def toTokens(lisp_expression):
+    lisp_expression = lisp_expression.replace('(', ' ( ').replace(')', ' ) ')
+    lisp_expression = lisp_expression.replace('\'', ' \' ') 
+    lisp_expression = lisp_expression.split()
+    return lisp_expression
+
+# parse Lisp expression from string
+def parse(lisp_expression):
+    # returns the tokenized Lisp command(s)
+    return readTokens(toTokens(lisp_expression))
+
+# puts expression back in Lisp form
+def toStr(exp):
+    if isinstance(exp, list):
+        # if the expression is a list, convert all elements of list back to Lisp form
+        return '(' + ' '.join(map(toStr, exp)) + ')'
+    else:
+        # if the expression is not a list, the Lisp espression is equivalent, return the expression
+        return str(exp)
+
+#=============================================================================
+#
+# Gets Lisp commands from repl or from an input test file
+# Evaluates commands by calling eval() as defined above
+#
+#=============================================================================
+
+# evaluates the command provided either in a test file or by repl
+def evaluateCommand(lisp_input):
     # evaluates input
     val = eval(parse(lisp_input))
     if val is not None:
-        if (to_str(val) == "True"):
+        if (toStr(val) == "True"):
             # if value is true print T
             print("T")
-        elif (to_str(val) == "False"):
+        elif (toStr(val) == "False"):
             # if value is false print ()
             print("()")
         else:
             # prints output of expression (if not T or ())
-            print((to_str(val)))
+            print((toStr(val)))
 
-# gets input of Lisp commands
-def get_input():
+# gets input of Lisp commands either by repl or from input file
+def getInput():
     if len(sys.argv) > 1:
         # if a test file is provided as argument, use lines of test file as input
         # outputs results of each line to stdout
@@ -227,24 +293,17 @@ def get_input():
             lisp_input = line.strip()
             if lisp_input == "quit":
                 break
-            evaluate_command(lisp_input)
+            evaluateCommand(lisp_input)
     else:
-        # if a test file is not provided as argument, use line by line user input as input
+        # if a test file is not provided as argument, use repl
         # outputs results of each expression to stdout
         while True:
             lisp_input = input('-> ')
             if lisp_input == "quit":
                 break
-            evaluate_command(lisp_input)
+            evaluateCommand(lisp_input)
 
-# puts expression back in Lisp form
-def to_str(exp):
-    if isinstance(exp, list):
-        # if the expression is a list, convert all elements of list back to Lisp form
-        return '(' + ' '.join(map(to_str, exp)) + ')'
-    else:
-        # if the expression is not a list, the Lisp espression is equivalent, return the expression
-        return str(exp)
-
+# extra print statement included so test results match Kamin C++ results
 print()
-get_input()
+# calls getInput(), begins reading input
+getInput()
