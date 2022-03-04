@@ -5,14 +5,6 @@ import operator as op
 class Symbol(str): pass
 Symbol = str
 
-
-symbol_dict = {}
-# find symbol in symbol_dict or create symbol entry in table
-def Sym(s):
-    if s not in symbol_dict:
-        symbol_dict[s] = Symbol(s)
-    return symbol_dict[s]
-
 # turns input strings into tokens separated by spaces
 def tokenize(lisp_expression):
     lisp_expression = lisp_expression.replace('(', ' ( ').replace(')', ' ) ')
@@ -24,7 +16,7 @@ def tokenize(lisp_expression):
 def read_from_tokens(tokens):
     token = tokens.pop(0)
     if '(' == token:
-        # the following will be either NULL or an expresion
+        # the following will be either NULL or an expression
         token_list = []
         i = 0
         # makes token_list from all tokens within parentheses
@@ -142,53 +134,70 @@ env = {
     '()': False
 }
 
-# the following are the function definitons of required functionality
-# Sym() adds the functions to the list of symbols
-_string = Sym('string')
-_if = Sym('if')
-_set = Sym('set')
-_print = Sym('print')
-_while = Sym('while')
+envList = [env]
+
+
+class Procedure(object):
+    def __init__(self, params, body, outerEnv):
+        self.params, self.body, self.outerEnv  = params, body, outerEnv
+
+    def __call__(self, *args):
+        envList.append(dict(zip(self.params, args))) 
+        self.index = len(envList) - 1
+        return eval(self.body[0], dict(zip(self.params, args)), self.index)
+        
+def getEnvInd(x):
+    i = len(envList) - 1
+    while x not in envList[i]:
+        if i == 0:
+            break
+        i -= 1
+    return i
 
 # evaluates expression x within env as defined above
-def eval(x):
+def eval(x, env=envList[0], envI=0):
     if isinstance(x, Symbol):
         # checks if x is a symbol
-        return env[x]
+        if x in env: return env[x]
+        else: return envList[getEnvInd(x)][x]
     elif not isinstance(x, list):
         # checks if x is not a list
         return x
-    elif x[0] == _string:
+    elif x[0] == 'string':
         # "quoted" or unevaluated expression
         (_, quoted_str) = x
         return quoted_str
-    elif x[0] == _if:
+    elif x[0] == 'define':
+        (params, *body) = x[2:]
+        env[x[1]] = Procedure(params, body, env)
+        return x[1]
+    elif x[0] == 'if':
         # if statement evaluation 
         (_, test, if_true, if_false) = x
-        result = (if_true if eval(test) else if_false)
-        return eval(result)
-    elif x[0] == _set:
+        result = (if_true if eval(test, env, envI) else if_false)
+        return eval(result, env, envI)
+    elif x[0] == 'set':
         # sets var to expression
         (_, var, expression) = x
-        env[var] = eval(expression)
+        env[var] = eval(expression, env, envI)
         return env[var]
-    elif x[0] == _print:
+    elif x[0] == 'print':
         # prints x (and returns so is output twice)
         (_, print_statement) = x
-        print(eval(print_statement))
-        return eval(print_statement)
-    elif x[0] == _while:
+        print(eval(print_statement, env, envI))
+        return eval(print_statement, env, envI)
+    elif x[0] == 'while':
         # while loop evaluation
         (_, test, expBody) = x
-        while (eval(test)):
+        while (eval(test, env, envI)):
             exp = expBody
-            eval(exp)
+            eval(exp, env, envI)
         return ()
     else:
-        # if x is not in the above defined finctions (if, set, print, while)
+        # if x is not in the above defined finctions (if, set, print, while, define)
         # evaluate the expression, return solution 
-        func = eval(x[0])
-        args = [eval(arg) for arg in x[1:]]
+        func = eval(x[0], env, envI)
+        args = [eval(arg, env, getEnvInd(func)) for arg in x[1:]]
         return func(*args)
 
 # evaluates the command provided either in a test file or in line-by-line input
