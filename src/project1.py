@@ -142,7 +142,7 @@ env = {
     '()': False
 }
 
-# the following are the function definitons of required functionality
+# the following are the function definitions of required functionality
 # Sym() adds the functions to the list of symbols
 _string = Sym('string')
 _if = Sym('if')
@@ -185,7 +185,7 @@ def eval(x):
             eval(exp)
         return ()
     else:
-        # if x is not in the above defined finctions (if, set, print, while)
+        # if x is not in the above defined functions (if, set, print, while)
         # evaluate the expression, return solution 
         func = eval(x[0])
         args = [eval(arg) for arg in x[1:]]
