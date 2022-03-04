@@ -17,3 +17,4 @@
 (combination 5 1)
 (combination 5 3)
 (combination 5 4)
+quit
