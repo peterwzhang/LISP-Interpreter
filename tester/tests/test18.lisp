@@ -18,6 +18,4 @@
 T
 ()
 quit
-
-
 (cdr (cons 'a 'b))

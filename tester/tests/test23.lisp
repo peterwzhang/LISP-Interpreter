@@ -17,4 +17,6 @@
 (combination 5 1)
 (combination 5 3)
 (combination 5 4)
+(double-and-print (exponent 2 3))
+(double-and-print (factorial 3))
 quit

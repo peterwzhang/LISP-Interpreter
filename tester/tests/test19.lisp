@@ -1,2 +1,11 @@
-(+ 2 2)
+(set small 1)
+(set big 100)
+(define smaller () (begin (set big (- (/ (+ small big) 2) 1)) (/ (+ small big) 2)))
+(define bigger () (begin (set small (+ (/ (+ small big) 2) 1)) (/ (+ small big) 2)))
+(set mynum 25)
+(if (= mynum (smaller)) (print 'Correct!) (print 'Wrong!))
+(set small 1)
+(set big 100)
+(set mynum 75)
+(if (= mynum (bigger)) (print 'Correct!) (print 'Wrong!))
 quit

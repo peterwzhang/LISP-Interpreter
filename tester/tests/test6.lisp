@@ -1,5 +1,10 @@
 (symbol? 'a)
 (symbol? 5)
 (symbol? ())
+(symbol? (symbol? ()))
 (symbol? T)
+(set x 1)
+(symbol? x)
+(symbol? 'x)
+(symbol? (symbol? x))
 quit
