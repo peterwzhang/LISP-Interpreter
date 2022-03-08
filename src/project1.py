@@ -90,7 +90,7 @@ env = {
     'T': 'T',
     '()': False
 }
-        
+
 #=============================================================================
 #
 # Evaluation of Lisp commands by using the environment as defined above and/or
@@ -122,7 +122,7 @@ class Procedure(object):
     def __call__(self, *args):
         # when a predefined function is called:
         # append the new parameters and arguments to the environment list
-        envList.append(dict(zip(self.params, args))) 
+        envList.append(dict(zip(self.params, args)))
         # set index where function definition can be found within environment list
         self.index = len(envList) - 1
         # evaluates the function with provided arguments
@@ -148,7 +148,7 @@ def eval(x, env=envList[0], envI=0):
         env[x[1]] = Procedure(params, body, env)
         return x[1]
     elif x[0] == 'if':
-        # if statement evaluation 
+        # if statement evaluation
         (_, test, if_true, if_false) = x
         result = (if_true if eval(test, env, envI) else if_false)
         return eval(result, env, envI)
@@ -171,7 +171,7 @@ def eval(x, env=envList[0], envI=0):
         return ()
     else:
         # if x is not in the above defined finctions (if, set, print, while, define)
-        # evaluate the user defined function, return solution 
+        # evaluate the user defined function, return solution
         # calls user defined function
         func = eval(x[0], env, envI)
         # sets arguments to values as defined in function call
@@ -182,7 +182,7 @@ def eval(x, env=envList[0], envI=0):
 #=============================================================================
 #
 # Reads from tokenized (see below) strings, parses the tokens so they can be
-# interpreted by the program 
+# interpreted by the program
 #
 #=============================================================================
 
@@ -241,7 +241,7 @@ def readTokens(tokens):
 # turns input strings into tokens separated by spaces
 def toTokens(lisp_expression):
     lisp_expression = lisp_expression.replace('(', ' ( ').replace(')', ' ) ')
-    lisp_expression = lisp_expression.replace('\'', ' \' ') 
+    lisp_expression = lisp_expression.replace('\'', ' \' ')
     lisp_expression = lisp_expression.split()
     return lisp_expression
 

@@ -10,7 +10,7 @@ getInput() {
 
 runTest() {
     echo "Running test case $1"
-    ./tester/kamincpp.out < tester/tests/test"$1".lisp > tester/tests/test"$1".out
+    ./tester/kamincpp < tester/tests/test"$1".lisp > tester/tests/test"$1".out
     python3 src/project1.py < tester/tests/test"$1".lisp > tester/tests/test"$1".ans
     matchedLines=$(diff -w -y --suppress-common-lines "tester/tests/test$1.ans" "tester/tests/test$1.out" | wc -l | tr -d '[:space:]')
     if [ "$matchedLines" -eq "0" ]; then
@@ -33,5 +33,12 @@ test() {
     echo "Number of tests passed: $sucesses/$numTests"
 }
 
+makeKamin() {
+    cd tester || return
+    make
+    cd ..
+}
+
 getInput
+makeKamin
 test "$num"
