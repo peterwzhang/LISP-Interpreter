@@ -102,12 +102,12 @@ env = {
 # user defined functions are appended to this list
 envList = [env]
 
-# returns the index of the user defined function (where it's found in the environment list)
+# returns the index of the function (where it's found in the environment list)
 def getEnvInd(x):
     i = len(envList) - 1
     # goes through every element in the environment list
     while x not in envList[i]:
-        # when the index matches the index of the function called by the user, returns that index
+        # when the function is found in the list of environments, returns the index of that environment dictionary
         if i == 0:
             break
         i -= 1
@@ -121,7 +121,7 @@ class Procedure(object):
 
     def __call__(self, *args):
         # when a predefined function is called:
-        # append the new parameters and arguments to the environment list
+        # append the new parameters and arguments to the environment list as a dictionary
         envList.append(dict(zip(self.params, args)))
         # set index where function definition can be found within environment list
         self.index = len(envList) - 1
@@ -133,6 +133,7 @@ def eval(x, env=envList[0], envI=0):
     if isinstance(x, Symbol):
         # checks if x is a symbol
         if x in env: return env[x]
+        #finds and returns environment Symbol is in
         else: return envList[getEnvInd(x)][x]
     elif not isinstance(x, list):
         # checks if x is not a list
@@ -171,8 +172,8 @@ def eval(x, env=envList[0], envI=0):
         return ()
     else:
         # if x is not in the above defined finctions (if, set, print, while, define)
-        # evaluate the user defined function, return solution
-        # calls user defined function
+        # evaluate the function, return solution
+        # calls function
         func = eval(x[0], env, envI)
         # sets arguments to values as defined in function call
         args = [eval(arg, env, getEnvInd(func)) for arg in x[1:]]
