@@ -171,7 +171,7 @@
               project was complete. One group member would broadcast their
               screen onto a TV in a group study room in Gorgas and the others
               would discuss specifically how to implement the design we came up
-              with in the beginning stages of devolopment. We changed which
+              with in the beginning stages of development. We changed which
               member would be broadcasting their screen and which members would
               be verbally describing how to implement the design. We worked
               collaboratively and efficiently to implement this program as a
@@ -306,18 +306,30 @@
           </div>
           <div class="section">
             <h4>Testing Script</h4>
-            <p>
-              We used a bash script to help automate our tests. The bash script
-              is named "tester.sh" and it is located in the main directory. It
-              is hardcoded to specifically work with our project directory. We
-              updated a 1994 C++ version of Kamin's Lisp Interpreter to work
-              with a modern day C++ compiler. The testing script ask to run
-              either a specified single test case or all of the test cases. It
-              will then compile Kamin's Lisp Interpreter. Then the tester will
-              then run the test case(s) on the C++ Kamin Interpreter and our own
-              interpreter and compare the outputs. If the resulting outputs are
-              the same then the test passes.
-            </p>
+            <div style="float: left">
+              <p>
+                We used a bash script to help automate our tests. The bash
+                script is named "tester.sh" and it is located in the main
+                directory. It is hardcoded to specifically work with our project
+                directory. We updated a 1994 C++ version of Kamin's Lisp
+                Interpreter to work with a modern day C++ compiler. The testing
+                script ask to run either a specified single test case or all of
+                the test cases. It will then compile Kamin's Lisp Interpreter.
+                Then the tester will then run the test case(s) on the C++ Kamin
+                Interpreter and our own interpreter and compare the outputs. If
+                the resulting outputs are the same then the test passes.
+              </p>
+              <p>
+                Below, to the right you can see the output of our tester when we
+                ran it. To the left there is a list of our test cases. You can
+                view each test case individually along with the output of our
+                interpreter (the output is the same as Tim Budd's version of
+                Kamin's Lisp Interpreter).
+              </p>
+            </div>
+            <div style="float: right">
+              <img id="test-case-1" src="/manual/pictures/testerresults.png" />
+            </div>
           </div>
 
           <div class="section">

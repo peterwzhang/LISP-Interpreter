@@ -211,7 +211,7 @@ th {
 
 ol {
   margin: 0;
-  list-style: none; /* we add our own for use cases */
+  list-style: none;
 }
 
 .row {
