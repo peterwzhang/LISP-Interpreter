@@ -1,6 +1,13 @@
 import sys
 import operator as op
 
+#=============================================================================
+# Authors: Cara Cannarozzi, Madeline Moore, and Peter Zhang
+# Date: 02/31/2022
+# Title: Lisp Interpreter
+# Description: A lisp interpreter written in python. This interpreter interprets Kamin's flavour of lisp.
+#=============================================================================
+
 # class containing symbols (all are python strings)
 # symbols are defined as non-numbers (not ints or floats)
 class Symbol(str): pass
